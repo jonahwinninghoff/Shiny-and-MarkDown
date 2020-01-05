@@ -1,0 +1,12 @@
+name: MPrediction
+title: MPrediction
+username:
+account: jonahwinninghoff
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1627850
+bundleId: 2707007
+url: https://jonahwinninghoff.shinyapps.io/MPrediction/
+when: 1578185551.48937
+asMultiple: FALSE
+asStatic: FALSE

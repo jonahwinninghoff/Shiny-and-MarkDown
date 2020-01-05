@@ -1,0 +1,75 @@
+---
+title: "Machine Learning"
+author: "Jonah Winninghoff"
+date: "1/4/2020"
+output: ioslides_presentation
+---
+
+##
+#### How can the Machine Prediction possibly predict such a complex graph? The machine learning can only see 60% of dataset!
+```{r echo=FALSE, eval=TRUE, message=FALSE}
+library(plotly)
+library(caret)
+library(ElemStatLearn)
+library(dplyr)
+library(ggplot2)
+library(gbm)
+library(e1071)
+
+data(CO2)
+    set.seed(345)
+    inTrain <- createDataPartition(CO2$Treatment,p=.6,list=F)
+    training <- CO2[inTrain,]
+    testing <- CO2[-inTrain,]
+    modFit <- train(Treatment ~ ., method="gbm",data=training,verbose=FALSE)
+ 
+plot_ly(training,x=~uptake,y=~conc,color=~Treatment, type="scatter", mode = "markers",size=2,
+        colors = c("rosybrown","coral"))%>%
+        layout(xaxis = list(title="uptake rates (umol/m^2 sec)"),yaxis=list(title = "CO2 concentrations (mL/L)"))
+```
+
+
+##
+##### Then, it makes a prediction of what 40% of other dataset looks like!
+```{r echo=FALSE, eval=TRUE, message=FALSE}
+plot_ly(testing,x=~uptake,y=~conc,color=~Treatment,
+        type="scatter",size=2,colors = c("rosybrown","coral"))%>%
+        layout(xaxis = list(title="uptake rates (umol/m^2 sec)"),
+        yaxis=list(title = "CO2 concentrations (mL/L)"))
+```
+
+## Did it get wrong? Sometimes. But at this time, it does not get wrong!
+#### Here's proof
+
+```{r echo=TRUE,eval=TRUE,message=TRUE}
+P<-confusionMatrix(testing$Treatment,predict(modFit,testing))
+P$table
+P$overall[1]
+```
+
+##
+#### Do you want to see how this prediction can happen?
+```{r echo=TRUE}
+data(CO2)
+    set.seed(345)
+    inTrain <- createDataPartition(CO2$Treatment,p=.6,list=F)
+    training <- CO2[inTrain,]
+    testing <- CO2[-inTrain,]
+    modFit <- train(Treatment~.,
+      method="gbm",data=training,verbose=FALSE)
+predict(modFit, testing)
+```
+
+##
+#### There are many basic machine learning tools that can be used.
+For example:
+
+- Boosting (gbm)
+- Simple linear regression (lm)
+- Random Forest (rf)
+- RPart (rpart)
+
+
+But how do I know which the one is right to use for prediction?
+
+# This is what Data Science Specialization certification is for!
